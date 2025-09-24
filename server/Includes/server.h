@@ -5,10 +5,10 @@
 #define LOGMSGLENGTH 100
 #define PINGSIZE 50
 #define OUTPUTLENGTH 100000
-#define MAXTIMEOUTCONSECS 3
-#define MAXTIMEOUTCONUSECS 0
-#define MAXTIMEOUTPING 3
-#define MAXTIMEOUTPINGU 0
+#define MAXTIMEOUTCONSECS 10
+#define MAXTIMEOUTCONUSECS 1000000
+#define MAXTIMEOUTPING 10
+#define MAXTIMEOUTPINGU 1000000
 #define MAX_CLIENTS_HARD_LIMIT 1000
 
 typedef struct serverState{
@@ -16,19 +16,19 @@ typedef struct serverState{
 	char logBuff[LOGMSGLENGTH*100];
 	char addressContainer[INET_ADDRSTRLEN];
 	char *pathToFile;
-	u_int64_t serverRunning;
-	u_int64_t idle;
-	u_int64_t adminsActive,clientsActive,maxNumOfClients;
+	int64_t serverRunning;
+	int64_t idle;
+	int64_t adminsActive,clientsActive,maxNumOfClients;
 	DListWComp* listOfClients;
 	DListWComp* listOfAdmins;
 	stackList *kickedClients;
 	queueList* logs;
 	int server_socket;
 	struct sockaddr_in server_address;
-	u_int64_t totalSent;
-	u_int64_t timeActive;
+	int64_t totalSent;
+	int64_t timeActive;
 	double trafficRate;
-	u_int64_t dataSize;
+	int64_t dataSize;
 	
 }serverState;
 
@@ -37,11 +37,11 @@ typedef struct clientStruct{
 	struct	sockaddr_in clientAddress;
 	int client_socket;
 	socklen_t addrLength;
-	u_int64_t numOfBytesSent;
-	u_int64_t done;
-	u_int64_t bytesToRead;
+	int64_t numOfBytesSent;
+	int64_t done;
+	int64_t bytesToRead;
 	int fd;
-	u_int64_t isAdmin;
+	int64_t isAdmin;
 	char login[FIELDLENGTH+1];
 }clientStruct;
 

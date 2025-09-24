@@ -10,12 +10,12 @@ int receiveClientCommand(clientStruct* nextClient,char buff[LINESIZE]){
 		struct timeval tv;
 		fd_set rfds;
 		FD_ZERO(&rfds);
-		FD_SET((int)acessVarMtx(&varMtx,&nextClient->client_socket,0,-1),&rfds);
+		FD_SET(acessVarMtx32(&varMtx,&nextClient->client_socket,0,-1),&rfds);
 		tv.tv_sec=MAXTIMEOUTPING;
 		tv.tv_usec=MAXTIMEOUTPINGU;
-		iResult=select((int)acessVarMtx(&varMtx,&nextClient->client_socket,0,-1)+1,&rfds,(fd_set*)0,(fd_set*)0,&tv);
+		iResult=select(acessVarMtx32(&varMtx,&nextClient->client_socket,0,-1)+1,&rfds,(fd_set*)0,(fd_set*)0,&tv);
 		if(iResult>0){
-		return recv((int)acessVarMtx(&varMtx,&nextClient->client_socket,0,-1),buff,LINESIZE,0);
+		return recv(acessVarMtx32(&varMtx,&nextClient->client_socket,0,-1),buff,LINESIZE,0);
 		
 		}
 		return -1;

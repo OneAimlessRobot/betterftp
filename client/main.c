@@ -3,9 +3,9 @@ struct sockaddr_in server_address;
 static u_int64_t dataSize;
 const char* pingCorrect="queroja";
 #define MAXNUMBEROFTRIES 10
-#define MAXTIMEOUTSECS 3
+#define MAXTIMEOUTSECS 100
 #define MAXTIMEOUTUSECS 0
-#define MAXTIMEOUTCONS 3
+#define MAXTIMEOUTCONS 100
 #define MAXTIMEOUTUCONS 0
 #define FIELDLENGTH 127
 #define PINGSIZE 50
@@ -73,7 +73,6 @@ static int receiveServerPing(char buff[],u_int64_t size){
 
 
 static int receiveWholeServerPing(char message[],u_int64_t size){
-		int counter=0;
 	int64_t len=0;
 	int64_t total=0;
 

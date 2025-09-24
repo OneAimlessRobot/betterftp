@@ -20,6 +20,7 @@ void* acessListMtx(pthread_mutex_t * mtx,DListW* list,void* value,u_int64_t inde
 	void* result=NULL;
 	if(list){
 	pthread_mutex_lock(mtx);
+	usleep(100000);
 	switch(op){
 	break;
 	case 0:
@@ -167,7 +168,45 @@ void* acessStackMtx(pthread_mutex_t * mtx,stackList* stck,void* value,int op){
 it allways returns the final value of the variable by default
 (whether or not one of the specific options above is chosen (returns original value))
 */
-u_int64_t acessVarMtx(pthread_mutex_t * mtx,u_int64_t* var,u_int64_t value,int op){
+int64_t acessVarMtx(pthread_mutex_t * mtx,int64_t* var,int64_t value,int op){
+	
+	pthread_mutex_lock(mtx);
+	int64_t result=0;
+	switch(op){
+	break;
+	case 0:
+	(*var)=value;
+	break;
+	case 1:
+	(*var)++;
+	break;
+	case 2:
+	(*var)--;
+	break;
+	case 3:
+	(*var)+=value;
+	break;
+	default:
+	break;
+	}
+	result=(*var);
+	pthread_mutex_unlock(mtx);
+	return result;
+
+
+
+}
+/*
+0- change its value
+1- increment it
+2- decrement it
+3- increment it (by a value)
+
+
+it allways returns the final value of the variable by default
+(whether or not one of the specific options above is chosen (returns original value))
+*/
+u_int64_t acessVarMtxUnsigned(pthread_mutex_t * mtx,u_int64_t* var,u_int64_t value,int op){
 	
 	pthread_mutex_lock(mtx);
 	u_int64_t result=0;
@@ -183,8 +222,198 @@ u_int64_t acessVarMtx(pthread_mutex_t * mtx,u_int64_t* var,u_int64_t value,int o
 	(*var)--;
 	break;
 	case 3:
-	result=value+(*var);
-	(*var)=result;
+	(*var)+=value;
+	break;
+	default:
+	break;
+	}
+	result=(*var);
+	pthread_mutex_unlock(mtx);
+	return result;
+
+
+
+}
+/*
+0- change its value
+1- increment it
+2- decrement it
+3- increment it (by a value)
+
+
+it allways returns the final value of the variable by default
+(whether or not one of the specific options above is chosen (returns original value))
+*/
+double acessVarMtxDouble(pthread_mutex_t * mtx,double* var,double value,int op){
+
+	pthread_mutex_lock(mtx);
+	double result=0;
+	switch(op){
+	break;
+	case 0:
+	(*var)=value;
+	break;
+	case 1:
+	(*var)+=1.0;
+	break;
+	case 2:
+	(*var)-=1.0;
+	break;
+	case 3:
+	(*var)+=value;
+	break;
+	default:
+	break;
+	}
+	result=(*var);
+	pthread_mutex_unlock(mtx);
+	return result;
+
+
+
+}
+
+/*
+0- change its value
+1- increment it
+2- decrement it
+3- increment it (by a value)
+
+
+it allways returns the final value of the variable by default
+(whether or not one of the specific options above is chosen (returns original value))
+*/
+int32_t acessVarMtx32(pthread_mutex_t * mtx,int32_t* var,int32_t value,int op){
+	
+	pthread_mutex_lock(mtx);
+	int32_t result=0;
+	switch(op){
+	break;
+	case 0:
+	(*var)=value;
+	break;
+	case 1:
+	(*var)++;
+	break;
+	case 2:
+	(*var)--;
+	break;
+	case 3:
+	(*var)+=value;
+	break;
+	default:
+	break;
+	}
+	result=(*var);
+	pthread_mutex_unlock(mtx);
+	return result;
+
+
+
+}
+/*
+0- change its value
+1- increment it
+2- decrement it
+3- increment it (by a value)
+
+
+it allways returns the final value of the variable by default
+(whether or not one of the specific options above is chosen (returns original value))
+*/
+int16_t acessVarMtx16(pthread_mutex_t * mtx,int16_t* var,int16_t value,int op){
+	
+	pthread_mutex_lock(mtx);
+	int16_t result=0;
+	switch(op){
+	break;
+	case 0:
+	(*var)=value;
+	break;
+	case 1:
+	(*var)++;
+	break;
+	case 2:
+	(*var)--;
+	break;
+	case 3:
+	(*var)+=value;
+	break;
+	default:
+	break;
+	}
+	result=(*var);
+	pthread_mutex_unlock(mtx);
+	return result;
+
+
+
+}
+/*
+0- change its value
+1- increment it
+2- decrement it
+3- increment it (by a value)
+
+
+it allways returns the final value of the variable by default
+(whether or not one of the specific options above is chosen (returns original value))
+*/
+void* acessVarMtxPtr(pthread_mutex_t * mtx,void** var,void* value,int op){
+	
+	pthread_mutex_lock(mtx);
+	void* result=0;
+	switch(op){
+	break;
+	case 0:
+	(*var)=value;
+	break;
+	case 1:
+	(*var)++;
+	break;
+	case 2:
+	(*var)--;
+	break;
+	case 3:
+	(*var)+=(u_int64_t)value;
+	break;
+	default:
+	break;
+	}
+	result=(*var);
+	pthread_mutex_unlock(mtx);
+	return result;
+
+
+
+}
+/*
+0- change its value
+1- increment it
+2- decrement it
+3- increment it (by a value)
+
+
+it allways returns the final value of the variable by default
+(whether or not one of the specific options above is chosen (returns original value))
+*/
+char* acessVarMtxString(pthread_mutex_t * mtx,char** var,char* value,int op){
+	
+	pthread_mutex_lock(mtx);
+	char* result=0;
+	switch(op){
+	break;
+	case 0:
+	(*var)=value;
+	break;
+	case 1:
+	(*var)++;
+	break;
+	case 2:
+	(*var)--;
+	break;
+	case 3:
+	(*var)+=(u_int64_t)value;
 	break;
 	default:
 	break;

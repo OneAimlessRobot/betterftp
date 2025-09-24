@@ -6,8 +6,8 @@ extern const char* pingCorrect;
 extern serverState* state;
 extern pthread_mutex_t varMtx;
 
-static int receiveClientPing(clientStruct* nextClient,char buff[],u_int64_t size){
-		int client_socket=(int)acessVarMtx(&varMtx,&nextClient->client_socket,0,-1);
+static int receiveClientPing(clientStruct* nextClient,char buff[],int64_t size){
+		int client_socket=acessVarMtx32(&varMtx,&nextClient->client_socket,0,-1);
 		int iResult;
 		struct timeval tv;
 		fd_set rfds;
@@ -20,10 +20,12 @@ static int receiveClientPing(clientStruct* nextClient,char buff[],u_int64_t size
 		return recv(client_socket,buff,size,0);
 		
 		}
-
+		else if(iResult<0){
+		return -1;
+		}
+	return -2;
 }
-int receiveWholeClientPing(clientStruct*client,char message[],u_int64_t size){
-                int counter=0;
+int receiveWholeClientPing(clientStruct*client,char message[],int64_t size){
         int64_t len=0;
         int64_t total=0;
 
@@ -39,13 +41,11 @@ for (; total<size;) { /* Watch out for buffer overflow */
 }
 
 int notifyClientAboutSizes(clientStruct* currClient,int numRead){
-u_int64_t dataSize=acessVarMtx(&varMtx,&state->dataSize,0,-1);
 char ping[PINGSIZE];
 memset(ping,0,PINGSIZE);
-int client_socket=(int)acessVarMtx(&varMtx,&currClient->client_socket,0,-1);
-int fd=(int)acessVarMtx(&varMtx,&currClient->fd,0,-1);
+int client_socket=acessVarMtx32(&varMtx,&currClient->client_socket,0,-1);
 		snprintf(ping,PINGSIZE,"%d", numRead);
-		send((int)acessVarMtx(&varMtx,&client_socket,0,-1),ping,PINGSIZE,0);
+		send(acessVarMtx32(&varMtx,&client_socket,0,-1),ping,PINGSIZE,0);
 		
 		int status=receiveWholeClientPing(currClient,ping,PINGSIZE);
 		//printf("%d %hu\n",status,pingSize);

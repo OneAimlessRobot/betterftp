@@ -57,16 +57,6 @@ node=NULL;
 
 return node;
 }
-static DList clearHEADDNode(DNode* node){
-if(!node){
-return node;
-
-}
-free(node->mem);
-node->mem=NULL;
-
-return node;
-}
 
 
 DListW* makeIntList(int arr[],int size){

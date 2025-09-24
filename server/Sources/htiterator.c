@@ -51,14 +51,14 @@ htiterator* initItHT(hashtablecomp* table){
 
 
 }
-void* hasNextItHT(htiterator*it){
+int hasNextItHT(htiterator*it){
 
-	return(void*)( it->currpos<=it->lastpos &&(int) hasNextItComp(it->currIt));
+	return( it->currpos<=it->lastpos &&(u_int64_t) hasNextItComp(it->currIt));
 
 }
 int rewindItHT(htiterator*it){
 
-	int firstpos=0;
+	u_int64_t firstpos=0;
 	while(!it->table->spine[firstpos]->currSize){
 		
 		firstpos++;
@@ -70,7 +70,7 @@ int rewindItHT(htiterator*it){
 	}
 
 	it->firstpos=firstpos;
-	int lastpos=it->table->currSpineSize-1;
+	u_int64_t lastpos=it->table->currSpineSize-1;
 	while(!it->table->spine[lastpos]->currSize&&lastpos<it->firstpos){
 		
 		lastpos--;

@@ -46,8 +46,8 @@ void setDataSize(int64_t argc,clientStruct*client, void** argv,char buff[LINESIZ
 }
 
 void getPingSize(int64_t argc,clientStruct*client, void** argv,char buff[LINESIZE]){
--
-	snprintf(buff,LINESIZE,"Tamanho de ping: %hu bytes.\n",PINGSIZE);
+
+	snprintf(buff,LINESIZE,"Tamanho de ping: %u bytes.\n",PINGSIZE);
           
 }
 
@@ -57,12 +57,12 @@ void getDataSize(int64_t argc,clientStruct*client, void** argv,char buff[LINESIZ
 }
 void getAdminQuota(int64_t argc,clientStruct*client, void** argv,char buff[LINESIZE]){
 
-	snprintf(buff,LINESIZE,"Estão %lu admins no server.\n",*(u_int64_t*)acessListMtx(&listMtx,state->listOfAdmins,0,0,4));
+	snprintf(buff,LINESIZE,"Estão %lu admins no server.\n",*(u_int64_t*)acessListCompMtx(&listMtx,state->listOfAdmins,0,0,4));
           
 }
 void getClientQuota(int64_t argc,clientStruct*client, void** argv,char buff[LINESIZE]){
 
-	snprintf(buff,LINESIZE,"Estão %lu clientes no server.\n",*(u_int64_t*)acessListMtx(&listMtx,state->listOfClients,0,0,4));
+	snprintf(buff,LINESIZE,"Estão %lu clientes no server.\n",*(u_int64_t*)acessListCompMtx(&listMtx,state->listOfClients,0,0,4));
           
 }
 void getTotalDataTransfered(int64_t argc,clientStruct*client, void** argv,char buff[LINESIZE]){
@@ -82,7 +82,7 @@ void setMaxClientQuota(int64_t argc,clientStruct*client, void** argv,char buff[L
 		return;
 	}
 	u_int64_t finalResult= min(atoi(argv[1]),MAX_CLIENTS_HARD_LIMIT);
-	acessVarMtx(&varMtx,&state->maxNumOfClients,abs(finalResult),0);
+	acessVarMtx(&varMtx,&state->maxNumOfClients,finalResult,0);
           
 }
 
@@ -129,7 +129,7 @@ void getAdminList(int64_t argc,clientStruct*client, void** argv,char buff[LINESI
 
 void getMaxClientHardLimit(int64_t argc,clientStruct*client, void** argv,char buff[LINESIZE]){
 
-	snprintf(buff,LINESIZE,"%lu",MAX_CLIENTS_HARD_LIMIT);
+	snprintf(buff,LINESIZE,"%u",MAX_CLIENTS_HARD_LIMIT);
 
 }
 
@@ -141,7 +141,7 @@ void getLoadedLogins(int64_t argc,clientStruct*client, void** argv,char buff[LIN
 
                 loginStruct* next= (loginStruct*)nextItHT(it);
 
-                curr+=snprintf(curr,2*FIELDLENGTH+4,"%s %s\n",next->user,next->password,strlen(next->user));
+                curr+=snprintf(curr,2*FIELDLENGTH+4,"%s %s\n",next->user,next->password);
 
         }
         if(it->currIt){
@@ -179,7 +179,7 @@ void kickLogin(int64_t argc,clientStruct*client, void** argv,char buff[LINESIZE]
 
 	}
 	
-	clientStruct* kickedClient= acessListMtx(&listMtx, state->listOfClients,NULL,atoi(argv[1]),2);
+	clientStruct* kickedClient= acessListCompMtx(&listMtx, state->listOfClients,NULL,atoi(argv[1]),2);
 	acessVarMtx(&varMtx,&kickedClient->done,1,0);
 	
 	snprintf(buff,LINESIZE,"Cliente removido!!!!\n");

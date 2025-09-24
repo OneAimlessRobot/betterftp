@@ -3,6 +3,7 @@
 #define SERVERLOGSY 0
 #define ARGVMAX 100
 #define LINESIZE 1024
+#define PRINTING_FUNC printw
 #include <ncurses.h>
 #include <stdio.h>
 #include <arpa/inet.h>
